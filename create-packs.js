@@ -14,19 +14,33 @@ const packs = [];
 let pack = 0;
 
 async function main(payload) {
-  payload.emojis[args[0]].emojis.forEach((emoji) => {
+  const emojiList = payload.emojis[args[0]].emojis;
+  console.log(Math.ceil(emojiList.length / 30))
+  console.log(emojiList.length)
+  emojiList.forEach((emoji) => {
     if (!packs[pack]) packs[pack] = { name: `Emoji pack ${pack + 1}`, author: 'Me!', emotes: [] };
-    if (packs[pack].emotes.length === 30) {
-      fs.writeFileSync(`packs/pack-${pack + 1}.json`, JSON.stringify(packs[pack], null, 2));
-      console.log(`wrote packs/pack-${pack + 1}`);
-      pack++;
-    } else {
+    if (Math.ceil(emojiList.length / 30) === pack + 1) {
       packs[pack].emotes.push({
         name: emoji.name,
         url: emoji.url
       });
+    } else {
+      if (packs[pack].emotes.length === 30) {
+        fs.writeFileSync(`packs/emoji-pack-${pack + 1}.json`, JSON.stringify(packs[pack], null, 2));
+        console.log(`wrote packs/emoji-pack-${pack + 1}`);
+        pack++;
+      } else {
+        packs[pack].emotes.push({
+          name: emoji.name,
+          url: emoji.url
+        });
+      }
     }
   });
+
+  //? hacky but will only be needed for the final pack.
+  fs.writeFileSync(`packs/emoji-pack-${pack + 1}.json`, JSON.stringify(packs[pack], null, 2));
+  console.log(`wrote packs/emoji-pack-${pack + 1}`);
 }
 
 ws.on('message', async (msg) => {
