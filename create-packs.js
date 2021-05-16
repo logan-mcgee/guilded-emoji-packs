@@ -15,10 +15,10 @@ let pack = 0;
 
 async function main(payload) {
   payload.emojis[args[0]].emojis.forEach((emoji) => {
-    if (!packs[pack]) packs[pack] = { name: `RSM emoji pack ${pack + 1}`, author: 'RSM', emotes: [] };
+    if (!packs[pack]) packs[pack] = { name: `Emoji pack ${pack + 1}`, author: 'Me!', emotes: [] };
     if (packs[pack].emotes.length === 30) {
-      fs.writeFileSync(`packs/rsm-pack-${pack + 1}.json`, JSON.stringify(packs[pack], null, 2));
-      console.log(`wrote packs/rsm-pack-${pack + 1}`);
+      fs.writeFileSync(`packs/pack-${pack + 1}.json`, JSON.stringify(packs[pack], null, 2));
+      console.log(`wrote packs/pack-${pack + 1}`);
       pack++;
     } else {
       packs[pack].emotes.push({
